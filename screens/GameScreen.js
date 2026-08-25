@@ -1,6 +1,6 @@
 import ThemedBackground from '../components/ThemedBackground';
 import { useState } from 'react';
-import { View, Text, ScrollView, StyleSheet, Animated, Modal, TouchableOpacity, TextInput, Dimensions } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, Animated, Modal, TouchableOpacity, TextInput, Dimensions, KeyboardAvoidingView, Platform } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAudioPlayer } from 'expo-audio';
 import { questions, mainCategories, units } from '../data/questions';
@@ -199,24 +199,26 @@ export default function GameScreen({ navigation, route }) {
       )}
 
       <Modal visible={showNoteModal} transparent animationType="slide">
-        <View style={styles.noteModalOverlay}>
-          <View style={styles.noteModalBox}>
-            <Text style={styles.noteModalTitle}>📝 Not Al</Text>
-            <Text style={styles.noteModalTag}>#{unitName}</Text>
-            <TextInput style={styles.noteInput} placeholder="Başlık (isteğe bağlı)" placeholderTextColor="#aaa" value={noteTitle} onChangeText={setNoteTitle} />
-            <TextInput style={[styles.noteInput, styles.noteTextArea]} placeholder="Notunu buraya yaz..." placeholderTextColor="#aaa" value={noteContent} onChangeText={setNoteContent} multiline numberOfLines={6} textAlignVertical="top" />
-            <View style={styles.noteModalButtons}>
-              <TouchableOpacity style={styles.noteCancelBtn} onPress={() => { setNoteTitle(''); setNoteContent(''); setShowNoteModal(false); }}>
-                <Text style={styles.noteCancelText}>İptal</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.noteSaveBtn} onPress={handleSaveNote}>
-                <LinearGradient colors={['#6c5ce7', '#a855f7']} style={styles.noteSaveBtnGradient}>
-                  <Text style={styles.noteSaveText}>Kaydet</Text>
-                </LinearGradient>
-              </TouchableOpacity>
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
+          <View style={styles.noteModalOverlay}>
+            <View style={styles.noteModalBox}>
+              <Text style={styles.noteModalTitle}>📝 Not Al</Text>
+              <Text style={styles.noteModalTag}>#{unitName}</Text>
+              <TextInput style={styles.noteInput} placeholder="Başlık (isteğe bağlı)" placeholderTextColor="#aaa" value={noteTitle} onChangeText={setNoteTitle} />
+              <TextInput style={[styles.noteInput, styles.noteTextArea]} placeholder="Notunu buraya yaz..." placeholderTextColor="#aaa" value={noteContent} onChangeText={setNoteContent} multiline numberOfLines={6} textAlignVertical="top" />
+              <View style={styles.noteModalButtons}>
+                <TouchableOpacity style={styles.noteCancelBtn} onPress={() => { setNoteTitle(''); setNoteContent(''); setShowNoteModal(false); }}>
+                  <Text style={styles.noteCancelText}>İptal</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.noteSaveBtn} onPress={handleSaveNote}>
+                  <LinearGradient colors={['#6c5ce7', '#a855f7']} style={styles.noteSaveBtnGradient}>
+                    <Text style={styles.noteSaveText}>Kaydet</Text>
+                  </LinearGradient>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
-        </View>
+        </KeyboardAvoidingView>
       </Modal>
     </ThemedBackground>
   );
