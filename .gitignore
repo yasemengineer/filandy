@@ -2,3 +2,5 @@
 .expo/
 *.log
 .env
+android/ 
+*.keystore 
