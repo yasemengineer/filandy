@@ -1,6 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Text, View, StyleSheet } from 'react-native';
 import { FEATURES } from './config/features';
 import HomeScreen from './screens/HomeScreen';
@@ -58,8 +59,15 @@ function MainTabs() {
 
 export default function App() {
   return (
+    <SafeAreaProvider>
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+          animation: 'slide_from_right',
+          contentStyle: { backgroundColor: '#1a1a6e' },
+        }}
+      >
         <Stack.Screen name="MainTabs" component={MainTabs} />
         <Stack.Screen name="UnitSelect" component={UnitSelectScreen} />
         <Stack.Screen name="Game" component={GameScreen} />
@@ -87,6 +95,7 @@ export default function App() {
         {FEATURES.calculator && <Stack.Screen name="Calculator" component={CalculatorScreen} />}
       </Stack.Navigator>
     </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
 

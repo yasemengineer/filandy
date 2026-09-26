@@ -1,6 +1,6 @@
 import ThemedBackground from '../components/ThemedBackground';
 import { useState } from 'react';
-import { View, Text, ScrollView, StyleSheet, Animated, Modal, TouchableOpacity, TextInput, Dimensions, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, Animated, Modal, TouchableOpacity, TextInput, Dimensions, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAudioPlayer } from 'expo-audio';
 import { questions, mainCategories, units } from '../data/questions';
@@ -109,6 +109,7 @@ export default function GameScreen({ navigation, route }) {
   if (!current) return (
   <ThemedBackground>
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <ActivityIndicator size="large" color="#a855f7" style={{ marginBottom: 14 }} />
       <Text style={{ color: '#fff', fontSize: 16 }}>Sorular yükleniyor...</Text>
     </View>
   </ThemedBackground>
@@ -169,16 +170,18 @@ export default function GameScreen({ navigation, route }) {
               )}
               <View style={styles.navRow}>
                 {currentIndex > 0 ? (
-                  <TouchableOpacity onPress={() => setCurrentIndex(currentIndex - 1)}>
+                  <TouchableOpacity style={styles.prevButtonWrap} onPress={() => setCurrentIndex(currentIndex - 1)} activeOpacity={0.8}>
                     <Text style={styles.prevButton}>← Önceki Soru</Text>
                   </TouchableOpacity>
                 ) : (
                   <View />
                 )}
-                <TouchableOpacity onPress={handleNext}>
-                  <Text style={styles.nextButton}>
-                    {currentIndex + 1 < filteredQuestions.length ? 'Sonraki Soru →' : 'Sonuçları Gör →'}
-                  </Text>
+                <TouchableOpacity onPress={handleNext} activeOpacity={0.85}>
+                  <LinearGradient colors={['#8b5cf6', '#a855f7']} style={styles.nextButtonWrap}>
+                    <Text style={styles.nextButton}>
+                      {currentIndex + 1 < filteredQuestions.length ? 'Sonraki Soru →' : 'Sonuçları Gör →'}
+                    </Text>
+                  </LinearGradient>
                 </TouchableOpacity>
               </View>
             </View>
@@ -243,9 +246,11 @@ const styles = StyleSheet.create({
   explanationBox: { backgroundColor: 'rgba(255,255,255,0.12)', borderRadius: 14, padding: 16, marginTop: 12, borderWidth: 1, borderColor: 'rgba(255,255,255,0.2)' },
   explanationTitle: { fontSize: 16, fontWeight: 'bold', color: '#fff', marginBottom: 8 },
   explanationText: { fontSize: 14, color: 'rgba(255,255,255,0.9)', lineHeight: 22, marginBottom: 14 },
-  nextButton: { fontSize: 16, fontWeight: 'bold', color: '#a855f7', textAlign: 'right' },
+  nextButtonWrap: { paddingHorizontal: 20, paddingVertical: 12, borderRadius: 14, shadowColor: '#a855f7', shadowOpacity: 0.5, shadowRadius: 8, shadowOffset: { width: 0, height: 3 }, elevation: 4 },
+  nextButton: { fontSize: 16, fontWeight: 'bold', color: '#ffffff' },
   navRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 8 },
-  prevButton: { fontSize: 16, fontWeight: 'bold', color: 'rgba(255,255,255,0.6)' },
+  prevButtonWrap: { paddingHorizontal: 16, paddingVertical: 12, borderRadius: 14, borderWidth: 1.5, borderColor: 'rgba(255,255,255,0.35)' },
+  prevButton: { fontSize: 15, fontWeight: 'bold', color: '#ffffff' },
   xpPopup: { position: 'absolute', bottom: 60, alignSelf: 'center', backgroundColor: 'rgba(168,85,247,0.95)', paddingHorizontal: 28, paddingVertical: 14, borderRadius: 30, borderWidth: 2, borderColor: '#fff', elevation: 10 },
   xpPopupText: { color: '#fff', fontSize: 26, fontWeight: 'bold' },
   noteModalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.7)', justifyContent: 'flex-end' },
